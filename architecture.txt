@@ -1,0 +1,37 @@
+## Voting System API - Architecture and Design
+
+### Project Structure:
+*Controller Layer (VotingController.java)*: Handles HTTP requests and directs them to the service layer.
+
+*Service Layer (VotingService.java)*: Contains the business logic for handling candidate and vote operations.
+
+*Model Layer (Candidate.java)*: Defines the Candidate entity with attributes like name and vote count.
+
+### Design Decisions:
+
+*In-Memory Data Storage*: Since the requirement is to use local variables instead of a database, we used a ConcurrentHashMap in the service layer to store candidates and their respective vote counts. This ensures thread safety when multiple users are interacting with the API simultaneously.
+
+*Thread Safety*: The ConcurrentHashMap in Java allows for safe concurrent updates, which is essential for handling the castVote endpoint where multiple users may cast votes simultaneously.
+
+*Separation of Concerns*: The code is organized into Controller, Service, and Model layers to maintain modularity. This separation allows easier testing and scalability in case the project needs to be expanded.
+
+*Validation*: Basic validation is implemented to ensure that votes can only be cast for candidates who have been entered into the system.
+
+### Dependencies:
+
+*Spring Boot*: For setting up a REST API quickly with minimal configuration.
+
+*JUnit and Mockito*: For unit testing and mocking dependencies in tests.
+
+*MockMvc*: Used for simulating HTTP requests in unit tests for the controller.
+
+### API Overview:
+
+Each endpoint has a specific responsibility:
+/vote/entercandidate: Adds a candidate to the system.
+/vote/castvote: Casts a vote for an existing candidate.
+/vote/countvote: Retrieves the vote count of a specified candidate.
+/vote/listvote: Returns a list of all candidates with their vote counts.
+/vote/getwinner: Finds the candidate with the highest vote count.
+
+This modular design makes it easier to update or extend the application with additional features.
